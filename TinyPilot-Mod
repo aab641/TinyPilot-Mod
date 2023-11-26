@@ -1,0 +1,28 @@
+// ==UserScript==
+// @name     TinyPilot Mod
+// @version  1
+// @grant    none
+// @match		 https://tinypilot/
+// ==/UserScript==
+
+window.addEventListener('load', function() {
+    console.log('test');
+    var videoLive = document.getElementById("remote-screen").shadowRoot.getElementById("webrtc-output");
+    var mpegLive = document.getElementById("remote-screen").shadowRoot.getElementById("mjpeg-output");
+  
+    mpegLive.remove();
+    videoLive.id = "local-output";
+  
+    let mediaDevices = navigator.mediaDevices;
+  
+     if (navigator.mediaDevices.getUserMedia) {
+       navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+         videoLive.srcObject = stream;
+       }).catch(function (error) {
+         console.log("Something went wrong.");
+       });
+     }else{
+       console.log("Local video interfaces not accessible!");
+     }
+  
+}, false);
